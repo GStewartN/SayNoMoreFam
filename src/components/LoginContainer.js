@@ -6,7 +6,8 @@ class LoginContainer extends React.Component {
     super(props);
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      error: ''
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -24,7 +25,12 @@ class LoginContainer extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log(this.state);
+    this.setState({ error: '' });
+    if (this.state.email && this.state.password) {
+      // Try login
+    } else {
+      this.setState({ error: 'Please fill in both fields.' });
+    }
   }
 
   render () {
@@ -45,6 +51,7 @@ class LoginContainer extends React.Component {
             onChange={this.handleInputChange}
             value={this.state.password}
             placeholder="Your Password"/>
+          <p className="error">{this.state.error}</p>
           <button className="red light" type="submit">Login</button>
         </form>
       </div>
