@@ -3,12 +3,19 @@ import LoginContainer from './LoginContainer';
 import './app.css';
 
 class App extends React.Component {
+  state = { user: null };
 
-greeting = "Hello from React!!"
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.setState({ user });
+      }
+    });
+  }
 
   render() {
     return (
-      <div id="container" className="inner-container">
+      <div id="container">
         <LoginContainer />
       </div>
     );
