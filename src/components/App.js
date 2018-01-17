@@ -6,7 +6,14 @@ import User from "./User";
 import './app.css';
 
 class App extends React.Component {
-  state = { user: null };
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: null
+    };
+
+    this.handleSubmitMessage = this.handleSubmitMessage.bind(this);
+  }
 
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
@@ -18,11 +25,24 @@ class App extends React.Component {
     });
   }
 
+  handleSubmitMessage = msg => {
+    // send to database
+    console.log(msg);
+  }
+
   render() {
     return (
       <div id="container">
         <Route path="/login" component={LoginContainer} />
-        <Route exact path="/" component={ChatContainer} />
+        <Route
+          exact
+          path="/"
+          render={() => (
+            <ChatContainer
+              onSubmit={this.handleSubmitMessage}
+            />
+          )}
+        />
         <Route path="/users/:id" component={User} />
       </div>
     );
