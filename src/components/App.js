@@ -26,8 +26,13 @@ class App extends React.Component {
   }
 
   handleSubmitMessage = msg => {
-    // send to database
-    console.log(msg);
+    const data = {
+      msg,
+      author: this.state.user.email,
+      user_id: this.state.user.uid,
+      timestamp: Date.now()
+    };
+    firebase.database().ref("messages/").push(data);
   }
 
   render() {
