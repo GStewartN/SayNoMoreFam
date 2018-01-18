@@ -13,6 +13,17 @@ class ChatContainer extends React.Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.getAuthor = this.getAuthor.bind(this);
+  }
+
+  getAuthor = (msg, nextMsg) => {
+    if (!nextMsg || nextMsg.author !== msg.author) {
+      return (
+        <p className="author">
+          <Link to={`/users/${msg.user_id}`}>{msg.author}</Link>
+        </p>
+      );
+    }
   }
 
   handleKeyDown = e => {
@@ -46,14 +57,12 @@ class ChatContainer extends React.Component {
           </button>
         </Header>
         <div id="message-container">
-          {this.props.messages.map(msg => (
+          {this.props.messages.map( (msg, i) => (
             <div
               key={msg.id}
               className={`message ${this.props.user.email === msg.author && "mine"}`}>
               <p>{msg.msg}</p>
-              <p className="author">
-                <Link to={`/users/${msg.user_id}`}>{msg.author}</Link>
-              </p>
+              {this.getAuthor(msg, this.props.messages[i + 1])}
             </div>
           ))}
         </div>
