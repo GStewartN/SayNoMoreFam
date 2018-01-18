@@ -9,10 +9,12 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: null
+      user: null,
+      messages: []
     };
 
     this.handleSubmitMessage = this.handleSubmitMessage.bind(this);
+    this.onMessage = this.onMessage.bind(this)
   }
 
   componentDidMount() {
@@ -23,7 +25,19 @@ class App extends React.Component {
         this.props.history.push("/login");
       }
     });
+    firebase.database().ref("/messages").on("value", snapshot => {
+      this.onMessage(snapshot);
+    });
   }
+
+  onMessage = snapshot => {
+    const messages = Object.keys(snapshot.val()).map(key => {
+      const msg = snapshot.val()[key];
+      msg.id = key;
+      return msg;
+    });
+    console.log(messages);
+  };
 
   handleSubmitMessage = msg => {
     const data = {
