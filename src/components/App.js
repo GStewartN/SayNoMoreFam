@@ -36,8 +36,8 @@ class App extends React.Component {
       msg.id = key;
       return msg;
     });
-    console.log(messages);
-  };
+    this.setState({ messages });
+  }
 
   handleSubmitMessage = msg => {
     const data = {
@@ -59,6 +59,7 @@ class App extends React.Component {
           render={() => (
             <ChatContainer
               onSubmit={this.handleSubmitMessage}
+              messages={this.state.messages}
             />
           )}
         />
