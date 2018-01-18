@@ -69,7 +69,16 @@ class App extends React.Component {
             />
           )}
         />
-        <Route path="/users/:id" component={User} />
+        <Route
+          path="/users/:id"
+          render={({ history, match }) => (
+            <User
+              messagesLoaded={this.state.messagesLoaded}
+              messages={this.state.messages}
+              userID={match.params.id}
+            />
+          )}
+        />
       </div>
     );
   }
