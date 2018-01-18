@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from "react-dom";
 import { Link } from "react-router-dom";
 import Header from "./Header";
 
@@ -14,7 +15,25 @@ class ChatContainer extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.getAuthor = this.getAuthor.bind(this);
+    this.scrollToBottom = this.scrollToBottom.bind(this);
   }
+
+  componentDidMount() {
+    this.scrollToBottom();
+  }
+
+  componentDidUpdate(previousProps) {
+    if (previousProps.messages.length !== this.props.messages.length) {
+      this.scrollToBottom();
+    }
+  }
+
+  scrollToBottom = () => {
+    const messageContainer = ReactDOM.findDOMNode(this.messageContainer);
+    if (messageContainer) {
+      messageContainer.scrollTop = messageContainer.scrollHeight;
+    }
+  };
 
   getAuthor = (msg, nextMsg) => {
     if (!nextMsg || nextMsg.author !== msg.author) {
@@ -56,7 +75,11 @@ class ChatContainer extends React.Component {
             Logout
           </button>
         </Header>
-        <div id="message-container">
+        <div
+          id="message-container"
+          ref={element => {
+            this.messageContainer = element;
+          }}>
           {this.props.messages.map( (msg, i) => (
             <div
               key={msg.id}
