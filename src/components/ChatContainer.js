@@ -45,6 +45,11 @@ class ChatContainer extends React.Component {
           </button>
         </Header>
         <div id="message-container">
+          {this.props.messages.map(msg => (
+            <div>
+              <p>{msg.msg}</p>
+            </div>
+          ))}
         </div>
         <div id="chat-input">
           <textarea
