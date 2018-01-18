@@ -10,7 +10,8 @@ class App extends React.Component {
     super(props);
     this.state = {
       user: null,
-      messages: []
+      messages: [],
+      messagesLoaded: false
     };
 
     this.handleSubmitMessage = this.handleSubmitMessage.bind(this);
@@ -27,6 +28,9 @@ class App extends React.Component {
     });
     firebase.database().ref("/messages").on("value", snapshot => {
       this.onMessage(snapshot);
+      if (!this.state.messagesLoaded) {
+        this.setState({ messagesLoaded: true });
+      }
     });
   }
 
@@ -58,6 +62,7 @@ class App extends React.Component {
           path="/"
           render={() => (
             <ChatContainer
+              messagesLoaded={this.state.messagesLoaded}
               onSubmit={this.handleSubmitMessage}
               user={this.state.user}
               messages={this.state.messages}
