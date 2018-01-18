@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import Header from "./Header";
 
 class ChatContainer extends React.Component {
@@ -46,8 +47,11 @@ class ChatContainer extends React.Component {
         </Header>
         <div id="message-container">
           {this.props.messages.map(msg => (
-            <div>
+            <div key={msg.id} className="message">
               <p>{msg.msg}</p>
+              <p className="author">
+                <Link to={`/users/${msg.user_id}`}>{msg.author}</Link>
+              </p>
             </div>
           ))}
         </div>
