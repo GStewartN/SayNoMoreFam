@@ -59,6 +59,7 @@ class App extends React.Component {
           render={() => (
             <ChatContainer
               onSubmit={this.handleSubmitMessage}
+              user={this.state.user}
               messages={this.state.messages}
             />
           )}
