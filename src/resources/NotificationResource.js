@@ -1,5 +1,17 @@
 export default class NotificationResource {
   constructor(messaging) {
-    console.log("instantiated");
+    this.messaging = messaging;
+    try {
+      this.messaging
+      .requestPermission()
+      .then(res => {
+        console.log("permission granted");
+      })
+      .catch(err => {
+        console.log("no access", err);
+      });
+    } catch(err) {
+      console.log("no notification support");
+    }
   }
 }
