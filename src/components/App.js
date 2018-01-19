@@ -3,6 +3,7 @@ import { Route, withRouter } from "react-router-dom";
 import LoginContainer from './LoginContainer';
 import ChatContainer from "./ChatContainer";
 import User from "./User";
+import NotificationResource from "../resources/NotificationResource";
 import './app.css';
 
 class App extends React.Component {
@@ -19,6 +20,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    this.notifications = new NotificationResource(firebase.messaging());
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.setState({ user });
