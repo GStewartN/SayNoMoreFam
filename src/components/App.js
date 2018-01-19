@@ -20,10 +20,15 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.notifications = new NotificationResource(firebase.messaging());
+    this.notifications = new NotificationResource(
+      firebase.messaging(),
+      firebase.database()
+    );
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.setState({ user });
+        this.listenForMessages();
+        this.notifications.changeUser(user);
       } else {
         this.props.history.push("/login");
       }
@@ -35,6 +40,18 @@ class App extends React.Component {
       }
     });
   }
+
+  listenForMessages = () => {
+    firebase
+      .database()
+      .ref('/messages')
+      .on('value', snapshot => {
+        this.onMessage(snapshot);
+        if (!this.state.messagesLoaded) {
+          this.setState({ messagesLoaded: true });
+        }
+      });
+  };
 
   onMessage = snapshot => {
     const messages = Object.keys(snapshot.val()).map(key => {
